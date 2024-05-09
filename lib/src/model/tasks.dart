@@ -9,17 +9,17 @@ class TasksFields{
 }
 
 class Tasks{
-  final int id;
+  final int? id;
   String title;
   String? content;
-  int kanbanId;
+  final int? kanbanId;
   final DateTime createdTime;
 
   Tasks({
-    required this.id, 
+    this.id, 
     required this.title, 
     required this.content, 
-    required this.kanbanId,
+    this.kanbanId,
     required this.createdTime,
   });
 

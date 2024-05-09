@@ -1,3 +1,5 @@
+import 'tasks.dart';
+
 final String kanbanTable = 'kanban';
 
 class KanbanFields {
@@ -8,6 +10,7 @@ class KanbanFields {
 class Kanban {
   late int? id;
   late String title;
+  late List<Tasks>? notes;
 
   Kanban({
     this.id,

@@ -16,19 +16,22 @@ class InitialPage extends StatefulWidget {
 
 class _InitialPageState extends State<InitialPage> {
   final DB _db = DB.instance;
-  final KanbanRepository _kanbanRepository = KanbanRepository(DB.instance);
 
-  List<Kanban> _kanbanList = [];
+  late List<Kanban> _kanbanList = [];
+  late List<Tasks> _tasksList = [];
 
   @override
   void initState() {
     super.initState();
-    _loadData();
+    loadData();
   }
 
-  Future<void> _loadData() async {
-    final kanbans = await _kanbanRepository.getKanbanList();
-    print('Kanban List: $kanbans');
+  Future<void> loadData() async {
+    final kanbans = await DB.instance.readAllKanban();
+    for (var kanban in kanbans) {
+      final tasks = await DB.instance.readTasksFromKanban(kanban.id!);
+      kanban.notes = tasks;
+    }
     setState(() {
       _kanbanList = kanbans;
     });
@@ -48,8 +51,10 @@ class _InitialPageState extends State<InitialPage> {
           child: ListView(
             children: _kanbanList
                 .map((kanban) => CardTasks(
-                      key: ValueKey(kanban.id),
+                      kanbanId: kanban.id!,
                       title: kanban.title,
+                      tasksList: kanban.notes ?? [],
+                      restart: loadData,
                     ))
                 .toList(),
           ),
@@ -80,8 +85,8 @@ class _InitialPageState extends State<InitialPage> {
                   ElevatedButton(
                     onPressed: () async {
                       if (newKanbanTitle.isNotEmpty) {
-                        await _kanbanRepository.addKanban(Kanban(title: newKanbanTitle));
-                        _loadData();
+                        await DB.instance.createKanban(Kanban(title: newKanbanTitle));
+                        loadData();
                         Navigator.pop(context);
                       }
                     },
