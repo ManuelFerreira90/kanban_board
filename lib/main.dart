@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kanban_board/pages/initial_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    theme: ThemeData.dark(),
+    home: const InitialPage(),
+  ));
 }
 
