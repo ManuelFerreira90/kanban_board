@@ -3,6 +3,7 @@ import 'package:kanban_board/pages/tasks_detail_or_create.dart';
 import 'content_tasks.dart';
 import '../src/model/tasks.dart';
 import '../src/database/db.dart';
+import '../src/model/kanban.dart';
 
 class CardTasks extends StatefulWidget {
   CardTasks({
@@ -24,15 +25,16 @@ class CardTasks extends StatefulWidget {
 
 class _CardTasksState extends State<CardTasks> {
   late List<Tasks> _currentTasks;
+  late int kanbanId;
+  late TextEditingController _titleController;
 
   @override
   void initState() {
     super.initState();
     _currentTasks = widget.tasksList;
-    restart = widget.restart;
+    kanbanId = widget.kanbanId;
+    _titleController = TextEditingController(text: widget.title);
   }
-
-  VoidCallback? restart;
 
   void reload() async {
     final tasks = await DB.instance.readTasksFromKanban(widget.kanbanId);
@@ -41,10 +43,56 @@ class _CardTasksState extends State<CardTasks> {
     });
   }
 
+  void _editKanbanTitle() {
+    _titleController.text = widget.title;
+    print(widget.title);
+    print(widget.kanbanId);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Editar Título do Kanban'),
+          content: TextField(
+            controller: _titleController,
+            decoration: InputDecoration(hintText: 'Novo Título'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () async {
+                final newTitle = _titleController.text.trim();
+                Kanban copyKanban = Kanban(
+                  title: newTitle,
+                  id: widget.kanbanId,
+                );
+                if (newTitle.isNotEmpty) {
+                  await DB.instance.updateKanban(copyKanban);
+                  widget.restart();
+                  reload();
+                  Navigator.pop(context);
+                }
+              },
+              child: Text('Salvar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints.tight(const Size(250.0, 300.0)),
+      constraints: BoxConstraints(
+        maxWidth: 310.0,
+        maxHeight: 350,
+      ),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -57,7 +105,12 @@ class _CardTasksState extends State<CardTasks> {
                   onPressed: () async {
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TasksDetailOrCreate(noteID: null,isEditing: false,)),
+                      MaterialPageRoute(
+                        builder: (context) => TasksDetailOrCreate(
+                          noteID: null,
+                          kanbanID: kanbanId,
+                        ),
+                      ),
                     );
                     reload();
                   },
@@ -87,26 +140,24 @@ class _CardTasksState extends State<CardTasks> {
                   ],
                   onSelected: (value) async {
                     if (value == 'edit') {
-                      // await Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => TasksDetailOrCreate(kanbanId: widget.kanbanId, isEditing: true,)),
-                      // );
-                      reload();
+                      _editKanbanTitle();
                     } else if (value == 'delete') {
                       await DB.instance.deleteKanban(widget.kanbanId);
-                      restart!();
+                      widget.restart();
                     }
                   },
                 ),
               ),
               const Divider(),
               SizedBox(
-                height: 200.0,
+                height: 250.0,
                 child: ListView(
                   children: _currentTasks
                       .map((note) => ContentTasks(
-                    idTask: note.id!,
+                    restart: reload,
                     title: note.title,
+                    idKanban: kanbanId,
+                    idTask: note.id!,
                   ))
                       .toList(),
                 ),
@@ -117,7 +168,4 @@ class _CardTasksState extends State<CardTasks> {
       ),
     );
   }
-
-
-
 }

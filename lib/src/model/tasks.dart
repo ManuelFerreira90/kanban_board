@@ -13,14 +13,14 @@ class Tasks{
   String title;
   String? content;
   final int? kanbanId;
-  final DateTime createdTime;
+  final DateTime? createdTime;
 
   Tasks({
     this.id, 
     required this.title, 
-    required this.content, 
+    this.content,
     this.kanbanId,
-    required this.createdTime,
+    this.createdTime,
   });
 
   Map<String, Object?> toJson() => {
@@ -28,7 +28,7 @@ class Tasks{
     TasksFields.title: title,
     TasksFields.content: content,
     TasksFields.kanbanId: kanbanId,
-    TasksFields.createdTime: createdTime.toIso8601String(),
+    TasksFields.createdTime: createdTime!.toIso8601String(),
   };
 
   Tasks copy({

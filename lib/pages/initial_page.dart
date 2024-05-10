@@ -41,22 +41,32 @@ class _InitialPageState extends State<InitialPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.menu),
+        leading: Icon(
+            Icons.bookmarks_outlined,
+            color: Colors.white,
+        ),
         title: const Text('Kanban Board'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
         child: SizedBox(
-          height: (_kanbanList.length * 300),
+          height: (_kanbanList.length * 380),
           child: ListView(
-            children: _kanbanList
-                .map((kanban) => CardTasks(
+            children: [
+              Center(
+                child: Wrap(
+                  children:
+                    _kanbanList
+                        .map((kanban) => CardTasks(
                       kanbanId: kanban.id!,
                       title: kanban.title,
                       tasksList: kanban.notes ?? [],
                       restart: loadData,
                     ))
-                .toList(),
+                        .toList(),
+                ),
+              ),
+            ]
           ),
         ),
       ),
