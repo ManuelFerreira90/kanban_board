@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../components/card_tasks.dart';
+import 'package:kanban_board/components/card_kanban.dart';
 import '../src/database/db.dart';
-import '../src/repository/kanban_repository.dart';
 import '../src/model/kanban.dart';
-import '../src/model/tasks.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
@@ -18,12 +16,12 @@ class _InitialPageState extends State<InitialPage> {
   final DB _db = DB.instance;
 
   late List<Kanban> _kanbanList = [];
-  late List<Tasks> _tasksList = [];
 
   @override
   void initState() {
     super.initState();
     loadData();
+
   }
 
   Future<void> loadData() async {
@@ -41,9 +39,18 @@ class _InitialPageState extends State<InitialPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-            Icons.bookmarks_outlined,
-            color: Colors.white,
+        leading: Container(
+          margin: const EdgeInsets.all(8.0),
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: const Color(0xFF4F378B),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.edit_note),
+            onPressed: () {},
+          ),
         ),
         title: const Text('Kanban Board'),
       ),
@@ -57,11 +64,9 @@ class _InitialPageState extends State<InitialPage> {
                 child: Wrap(
                   children:
                     _kanbanList
-                        .map((kanban) => CardTasks(
-                      kanbanId: kanban.id!,
-                      title: kanban.title,
-                      tasksList: kanban.notes ?? [],
-                      restart: loadData,
+                        .map((kanban) => CardKanban(
+                      kanban: kanban,
+                      restartKanbans: loadData,
                     ))
                         .toList(),
                 ),
@@ -78,19 +83,19 @@ class _InitialPageState extends State<InitialPage> {
               String newKanbanTitle = '';
 
               return AlertDialog(
-                title: Text('Create New Kanban'),
+                title: const Text('Create New Kanban'),
                 content: TextFormField(
                   onChanged: (value) {
                     newKanbanTitle = value;
                   },
-                  decoration: InputDecoration(hintText: 'Enter Kanban Title'),
+                  decoration: const InputDecoration(hintText: 'Enter Kanban Title'),
                 ),
                 actions: [
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -100,14 +105,14 @@ class _InitialPageState extends State<InitialPage> {
                         Navigator.pop(context);
                       }
                     },
-                    child: Text('Create'),
+                    child: const Text('Create'),
                   ),
                 ],
               );
             },
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

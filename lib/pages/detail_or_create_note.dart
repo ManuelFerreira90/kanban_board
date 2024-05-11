@@ -1,54 +1,37 @@
 import 'package:flutter/material.dart';
 import '../src/database/db.dart';
 import '../src/model/tasks.dart';
+import 'package:intl/intl.dart';
 
-class TasksDetailOrCreate extends StatefulWidget {
-  const TasksDetailOrCreate({
-    Key? key,
-    this.noteID,
-    required this.kanbanID,
-  }) : super(key: key);
+class DetailOrCreateNote extends StatefulWidget {
+  const DetailOrCreateNote({
+    super.key,
+    required this.note,
+    required this.isEditing,
+  });
 
-  final int kanbanID;
-  final int? noteID;
+  final Tasks note;
+  final bool isEditing;
 
   @override
-  State<TasksDetailOrCreate> createState() => _TasksDetailOrCreateState();
+  State<DetailOrCreateNote> createState() => _DetailOrCreateNoteState();
 }
 
-class _TasksDetailOrCreateState extends State<TasksDetailOrCreate> {
+class _DetailOrCreateNoteState extends State<DetailOrCreateNote> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
   late Tasks note;
   late bool isEditing;
-  late int kanbanID;
-  late int? noteID;
 
   @override
   void initState() {
     super.initState();
-    noteID = widget.noteID ?? null;
-    isEditing = noteID != null;
-    kanbanID = widget.kanbanID;
-    note = Tasks(id: 0, title: '', content: '', kanbanId: kanbanID); // Initialize note with default values
-    if(isEditing){
-      _loadTask();
-    }
-    else{
-      _titleController = TextEditingController(text: note.title);
-      _contentController = TextEditingController(text: note.content);
-    }
-    print(note.title);
+    note = widget.note;
+    isEditing = widget.isEditing;
+    _titleController = TextEditingController(text: note.title);
+    _contentController = TextEditingController(text: note.content);
   }
 
-  void _loadTask() async {
-    final tasks = await DB.instance.readTasks(noteID!);
-    setState(() {
-      this.note = tasks!;
-      _titleController = TextEditingController(text: note.title);
-      _contentController = TextEditingController(text: note.content);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +44,7 @@ class _TasksDetailOrCreateState extends State<TasksDetailOrCreate> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'Title',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
@@ -72,15 +55,26 @@ class _TasksDetailOrCreateState extends State<TasksDetailOrCreate> {
                   note.title = value;
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Enter Title',
               ),
             ),
             const SizedBox(height: 16),
             Text(
+              note.createdTime != null
+                  ? 'Created at: ${DateFormat('dd/MM/yyyy HH:mm').format(note.createdTime!)}'
+                  : '',
+              style: const TextStyle(
+                fontSize: 8,
+                color: Colors.grey,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+            const Text(
               'Content',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             TextFormField(
               controller: _contentController,
@@ -89,7 +83,7 @@ class _TasksDetailOrCreateState extends State<TasksDetailOrCreate> {
                   note.content = value;
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Enter Content',
               ),
@@ -101,7 +95,6 @@ class _TasksDetailOrCreateState extends State<TasksDetailOrCreate> {
       floatingActionButton: ButtonSaveAndEditing(
         isEditing: isEditing,
         tasks: note,
-        kanbanID: kanbanID,
       ),
     );
   }
@@ -110,13 +103,11 @@ class _TasksDetailOrCreateState extends State<TasksDetailOrCreate> {
 
 class ButtonSaveAndEditing extends StatelessWidget {
   const ButtonSaveAndEditing({
-    Key? key,
+    super.key,
     required this.isEditing,
     required this.tasks,
-    required this.kanbanID,
-  }) : super(key: key);
+  });
 
-  final int kanbanID;
   final Tasks tasks;
   final bool isEditing;
 
@@ -125,26 +116,26 @@ class ButtonSaveAndEditing extends StatelessWidget {
     return FloatingActionButton(
       onPressed: () async {
         if (isEditing) {
-          final Tasks copyTask = Tasks(
-            id: tasks.id,
-            title: tasks.title,
-            content: tasks.content,
-            kanbanId: kanbanID,
-            createdTime: DateTime.now(),
-          );
-          await DB.instance.updateTasks(copyTask);
+          // final Tasks copyTask = Tasks(
+          //   id: tasks.id,
+          //   title: tasks.title,
+          //   content: tasks.content,
+          //   kanbanId: tasks.kanbanId,
+          //   createdTime: DateTime.now(),
+          // );
+          await DB.instance.updateTasks(tasks);
         } else {
           final Tasks copyTask = Tasks(
             title: tasks.title,
             content: tasks.content,
-            kanbanId: kanbanID,
+            kanbanId: tasks.kanbanId,
             createdTime: DateTime.now(),
           );
           await DB.instance.createTasks(copyTask);
         }
         Navigator.pop(context);
       },
-      child: Icon(Icons.save),
+      child: const Icon(Icons.save),
     );
   }
 }
