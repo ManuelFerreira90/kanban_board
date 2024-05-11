@@ -11,6 +11,11 @@ Este aplicativo Kanban Board permite aos usuários gerenciar tarefas e organizá
 - Carimbo de data e hora para a criação da tarefa.
 
 ### Capturas de Tela
+<div style="display: flex;">
+  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/cde40b94-81e6-4504-80b8-910746517555" alt="1" width="300" />
+  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/27658470-d2c2-44bc-9239-a921dd444881" alt="2" width="300" />
+  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/546cf314-4d1f-4898-9e36-a6a804e6fddd" alt="3" width="300" />
+</div>
 
 ### Instalação
 1. Faça o download do APK mais recente da seção de releases.
