@@ -81,7 +81,7 @@ class ContentNote extends StatelessWidget {
                 children: [
                   Icon(Icons.delete),
                   SizedBox(width: 8),
-                  Text('Excluir'),
+                  Text('Delete'),
                 ],
               ),
             ),

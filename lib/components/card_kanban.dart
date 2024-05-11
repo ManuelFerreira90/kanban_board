@@ -23,19 +23,19 @@ class CardKanban extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Editar Título do Kanban'),
+          title: const Text('Edit Kanban Title'),
           content: TextField(
             onChanged: (value) {
               newTitle = value;
             },
-            decoration: const InputDecoration(hintText: 'Novo Título'),
+            decoration: const InputDecoration(hintText: 'New Title'),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Cancelar'),
+              child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -46,7 +46,7 @@ class CardKanban extends StatelessWidget {
                   Navigator.pop(context);
                 }
               },
-              child: const Text('Salvar'),
+              child: const Text('Save'),
             ),
           ],
         );
@@ -92,7 +92,7 @@ class CardKanban extends StatelessWidget {
                         children: [
                           Icon(Icons.edit),
                           SizedBox(width: 8),
-                          Text('Editar'),
+                          Text('Edit'),
                         ],
                       ),
                     ),
@@ -102,7 +102,7 @@ class CardKanban extends StatelessWidget {
                         children: [
                           Icon(Icons.delete),
                           SizedBox(width: 8),
-                          Text('Excluir'),
+                          Text('Delete'),
                         ],
                       ),
                     ),
