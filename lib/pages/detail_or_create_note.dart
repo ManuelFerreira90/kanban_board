@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import '../src/database/db.dart';
+import 'package:kanban_board/const.dart';
 import '../src/model/tasks.dart';
 import 'package:intl/intl.dart';
+import '../components/button_save_and_editing.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class DetailOrCreateNote extends StatefulWidget {
-  const DetailOrCreateNote({
+  DetailOrCreateNote({
     super.key,
     required this.note,
     required this.isEditing,
@@ -12,6 +14,7 @@ class DetailOrCreateNote extends StatefulWidget {
 
   final Tasks note;
   final bool isEditing;
+  bool isModify = false;
 
   @override
   State<DetailOrCreateNote> createState() => _DetailOrCreateNoteState();
@@ -35,108 +38,97 @@ class _DetailOrCreateNoteState extends State<DetailOrCreateNote> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Note'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'Title',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            TextFormField(
-              controller: _titleController,
-              onChanged: (value) {
-                setState(() {
-                  note.title = value;
-                });
-              },
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Enter Title',
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              note.createdTime != null
-                  ? 'Created at: ${DateFormat('dd/MM/yyyy HH:mm').format(note.createdTime!)}'
-                  : '',
-              style: const TextStyle(
-                fontSize: 8,
-                color: Colors.grey,
-              ),
-            ),
-
-            const SizedBox(height: 16),
-            const Text(
-              'Content',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            TextFormField(
-              controller: _contentController,
-              onChanged: (value) {
-                setState(() {
-                  note.content = value;
-                });
-              },
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Enter Content',
-              ),
-              maxLines: null,
-            ),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        extendBody: true,
+        appBar: AppBar(
+          title: const Text('Note'),
         ),
-      ),
-      floatingActionButton: ButtonSaveAndEditing(
-        isEditing: isEditing,
-        tasks: note,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+          child: widget.isModify ? ListView(
+            children: [
+              TextFormField(
+                controller: _titleController,
+                onChanged: (value) {
+                  setState(() {
+                    note.title = value;
+                  });
+                },
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Enter Title',
+                ),
+              ),
+              Text(
+                note.createdTime != null
+                    ? 'Created at: ${DateFormat('dd/MM/yyyy HH:mm').format(note.createdTime!)}'
+                    : '',
+                style: kSmallText,
+              ),
+              TextFormField(
+                controller: _contentController,
+                onChanged: (value) {
+                  setState(() {
+                    note.content = value;
+                  });
+                },
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Enter Content',
+                ),
+                maxLines: null,
+              ),
+            ],
+          ) : ListView(
+            children: [
+              MarkdownBody(
+                  data: '# ${note.title}'
+              ),
+              Text(
+                note.createdTime != null
+                    ? 'Created at: ${DateFormat('dd/MM/yyyy HH:mm').format(note.createdTime!)}'
+                    : '',
+                style: kSmallText,
+              ),
+              const SizedBox(height: 16),
+              MarkdownBody(
+                  data: note.content!
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ButtonSaveAndEditing(
+                isEditing: isEditing,
+                tasks: note,
+              ),
+              IconButton(
+                onPressed: (){
+                  setState(() {
+                    widget.isModify = !widget.isModify;
+                  });
+                },
+                icon: const Icon(Icons.edit_note),
+              ),
+            ],
+          ),
+        ),
+
+
+
+        // floatingActionButton: ButtonSaveAndEditing(
+        //   isEditing: isEditing,
+        //   tasks: note,
+        // ),
       ),
     );
   }
 }
 
 
-class ButtonSaveAndEditing extends StatelessWidget {
-  const ButtonSaveAndEditing({
-    super.key,
-    required this.isEditing,
-    required this.tasks,
-  });
 
-  final Tasks tasks;
-  final bool isEditing;
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () async {
-        if (isEditing) {
-          // final Tasks copyTask = Tasks(
-          //   id: tasks.id,
-          //   title: tasks.title,
-          //   content: tasks.content,
-          //   kanbanId: tasks.kanbanId,
-          //   createdTime: DateTime.now(),
-          // );
-          await DB.instance.updateTasks(tasks);
-        } else {
-          final Tasks copyTask = Tasks(
-            title: tasks.title,
-            content: tasks.content,
-            kanbanId: tasks.kanbanId,
-            createdTime: DateTime.now(),
-          );
-          await DB.instance.createTasks(copyTask);
-        }
-        Navigator.pop(context);
-      },
-      child: const Icon(Icons.save),
-    );
-  }
-}
 

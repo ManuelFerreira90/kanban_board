@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:kanban_board/const.dart';
 import 'package:kanban_board/pages/detail_or_create_note.dart';
 import 'package:kanban_board/src/model/kanban.dart';
 import 'package:kanban_board/src/model/tasks.dart';
@@ -80,7 +81,7 @@ class ContentNote extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(Icons.delete),
-                  SizedBox(width: 8),
+                  kSizedBoxSpace,
                   Text('Delete'),
                 ],
               ),
@@ -90,7 +91,7 @@ class ContentNote extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(Icons.drive_file_move),
-                  SizedBox(width: 8),
+                  kSizedBoxSpace,
                   Text('Move to'),
                 ],
               ),
@@ -106,7 +107,7 @@ class ContentNote extends StatelessWidget {
             }
           },
         ),
-        title: Text(note.title),
+        title: Text(note.title, style: kTitleInitalPageNote,),
       ),
     );
   }

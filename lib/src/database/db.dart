@@ -101,6 +101,13 @@ class DB {
     );
   }
 
+  Future<int> deleteAllKanban() async {
+    final db = await instance.database;
+    return db.delete(
+      kanbanTable,
+    );
+  }
+
   Future<Tasks> createTasks(Tasks tasks) async {
     final db = await instance.database;
     final id = await db.insert(tasksTable, tasks.toJson());
@@ -157,6 +164,22 @@ class DB {
       tasksTable,
       where: '${TasksFields.id} = ?',
       whereArgs: [id],
+    );
+  }
+
+  Future<int> deleteTasksFromKanban(int id) async {
+    final db = await instance.database;
+    return db.delete(
+      tasksTable,
+      where: '${TasksFields.kanbanId} = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> deleteAllTasks() async {
+    final db = await instance.database;
+    return db.delete(
+      tasksTable,
     );
   }
 
