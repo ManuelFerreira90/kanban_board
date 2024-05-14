@@ -15,9 +15,12 @@ Este aplicativo Kanban Board permite aos usuários gerenciar tarefas e organizá
 
 ### Capturas de Tela
 <div style="display: flex;">
-  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/cde40b94-81e6-4504-80b8-910746517555" alt="1" width="250" />
-  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/27658470-d2c2-44bc-9239-a921dd444881" alt="2" width="250" />
-  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/546cf314-4d1f-4898-9e36-a6a804e6fddd" alt="3" width="250" />
+  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/56d35392-172a-4729-9594-0f878e7ea990" alt="1" width="250" />
+  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/e40f2d51-bad0-49f6-8fbd-3512e4bdc0b0" alt="2" width="250" />
+  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/abf2a6a5-fc88-4000-92d3-1580142246eb" alt="3" width="250" />
+  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/467e53c9-9226-4e41-835b-f0cb3982b203" alt="4" width="250" />
+  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/99faa468-dca8-4a6a-ba1b-7850539a7b8f" alt="5" width="250" />
+  <img src="https://github.com/ManuelFerreira90/kanban_board/assets/105729881/f7c88d01-705d-479a-a16f-dcc3776a7865" alt="6" width="250" />
 </div>
 
 ### Instalação
