@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kanban_board/components/content_Note.dart';
+import 'package:kanban_board/components/content_note.dart';
 import '../src/model/tasks.dart';
 import '../src/database/db.dart';
 
@@ -46,6 +46,12 @@ class _AllNotesState extends State<AllNotes> {
   void _deleteAllNotes() async {
     await DB.instance.deleteAllTasks();
     _loadAllNotes();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text('all notes have been deleted!')
+      ),
+    );
   }
 
   @override

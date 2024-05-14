@@ -7,7 +7,14 @@ import '../src/database/db.dart';
 import '../src/model/kanban.dart';
 
 class InitialPage extends StatefulWidget {
-  const InitialPage({super.key});
+  const InitialPage({
+    super.key,
+    required this.isDark,
+    required this.setIsDark,
+  });
+
+  final VoidCallback setIsDark;
+  final bool isDark;
 
   @override
   State<InitialPage> createState() => _InitialPageState();
@@ -129,6 +136,11 @@ class _InitialPageState extends State<InitialPage> {
                   });
                 },
               ),
+              ListTile(
+                leading: widget.isDark ? const Icon(Icons.light_mode_outlined) : const Icon(Icons.dark_mode_outlined),
+                title: const Text('Theme Mode'),
+                onTap: widget.setIsDark,
+              ),
             ],
           ),
         ),
@@ -198,6 +210,12 @@ class _InitialPageState extends State<InitialPage> {
                               .createKanban(Kanban(title: newKanbanTitle));
                           _loadData();
                           Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                duration: Duration(seconds: 1),
+                                content: Text('kanban Board was created!')
+                            ),
+                          );
                         }
                       },
                       child: const Text('Create'),

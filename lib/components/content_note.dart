@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kanban_board/const.dart';
 import 'package:kanban_board/pages/detail_or_create_note.dart';
 import 'package:kanban_board/src/model/kanban.dart';
@@ -39,6 +38,12 @@ class ContentNote extends StatelessWidget {
                 await DB.instance.deleteTasks(note.id!);
 
                 restart();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      duration: Duration(seconds: 1),
+                      content: Text('The note was moved successfully!')
+                  ),
+                );
                 Navigator.pop(context);
               }
             },
@@ -69,6 +74,7 @@ class ContentNote extends StatelessWidget {
                 DetailOrCreateNote(
                   note: note,
                   isEditing: true,
+                  isModify: true,
                 )
             ),
           );
@@ -101,6 +107,12 @@ class ContentNote extends StatelessWidget {
             if (value == 'delete') {
               await DB.instance.deleteTasks(note.id!);
               restart();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    duration: Duration(seconds: 1),
+                    content: Text('The note was successfully deleted!')
+                ),
+              );
             }
             else if(value == 'move'){
               _moveNote(context);

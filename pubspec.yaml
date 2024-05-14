@@ -39,6 +39,8 @@ dependencies:
   star_menu: ^4.0.1
   intl: ^0.17.0
   flutter_markdown: ^0.7.1
+  markdown_toolbar: ^0.5.0
+  url_launcher: ^6.2.6
 
 dev_dependencies:
   flutter_test:

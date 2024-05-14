@@ -38,6 +38,12 @@ class _AllKanbansState extends State<AllKanbans> {
     await DB.instance.deleteAllTasks();
     await DB.instance.deleteAllKanban();
     _loadAllKanbans();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+          duration: Duration(seconds: 1),
+          content: Text('all kanban boards have been deleted!')
+      ),
+    );
   }
 
   @override

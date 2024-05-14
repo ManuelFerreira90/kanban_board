@@ -40,6 +40,7 @@ class TitleCardKanban extends StatelessWidget {
                 note: Tasks(
                     title: '', content: '', kanbanId: kanban.id),
                 isEditing: false,
+                isModify: false,
               ),
             ),
           );
@@ -72,11 +73,16 @@ class TitleCardKanban extends StatelessWidget {
         onSelected: (value) async {
           if (value == 'edit') {
             await editKanbanTitle(context, kanban, restartKanbans);
-            //restartKanbans();
           } else if (value == 'delete') {
             await DB.instance.deleteTasksFromKanban(kanban.id!);
             await DB.instance.deleteKanban(kanban.id!);
             restartKanbans();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  duration: Duration(seconds: 1),
+                  content: Text('The kanban board has been successfully deleted!')
+              ),
+            );
           }
         },
       ),

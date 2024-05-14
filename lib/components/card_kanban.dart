@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kanban_board/components/content_Note.dart';
+import 'package:kanban_board/components/content_note.dart';
 import 'package:kanban_board/components/title_card_kanban.dart';
 import 'package:kanban_board/const.dart';
-import 'package:kanban_board/pages/detail_or_create_note.dart';
-import 'package:kanban_board/src/database/db.dart';
 import 'package:kanban_board/src/model/kanban.dart';
-import 'package:kanban_board/src/model/tasks.dart';
 
 class CardKanban extends StatelessWidget {
   const CardKanban({
@@ -19,45 +15,6 @@ class CardKanban extends StatelessWidget {
   final Kanban kanban;
   final VoidCallback restartKanbans;
   final Function(BuildContext, Kanban kanban, VoidCallback restartKanbans) editKanbanTitle;
-
-  // void _editKanbanTitle(BuildContext context) {
-  //   String newTitle = kanban.title;
-  //
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: const Text('Edit Kanban Title'),
-  //         content: TextField(
-  //           onChanged: (value) {
-  //             newTitle = value;
-  //           },
-  //           //decoration: const InputDecoration(hintText: 'New Title'),
-  //
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.pop(context);
-  //             },
-  //             child: const Text('Cancel'),
-  //           ),
-  //           ElevatedButton(
-  //             onPressed: () async {
-  //               if (newTitle.isNotEmpty && newTitle != kanban.title) {
-  //                 kanban.title = newTitle;
-  //                 await DB.instance.updateKanban(kanban);
-  //                 restartKanbans();
-  //                 Navigator.pop(context);
-  //               }
-  //             },
-  //             child: const Text('Save'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
