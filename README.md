@@ -8,7 +8,10 @@ Este aplicativo Kanban Board permite aos usuários gerenciar tarefas e organizá
 - Adicionar, editar e excluir tarefas dentro dos quadros.
 - Mover tarefas entre os quadros.
 - Visualizar detalhes da tarefa e modificar o conteúdo da tarefa.
+- A tarefa está em formato markdown com uma toolbar para auxiliar na escrita da nota.
 - Carimbo de data e hora para a criação da tarefa.
+- Menu para visualizar todos os quadros kanba e todas as notas.
+- Possível alterar o tema do aplicativo.
 
 ### Capturas de Tela
 <div style="display: flex;">
