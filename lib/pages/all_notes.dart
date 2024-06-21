@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanban_board/components/content_note.dart';
+import '../const.dart';
 import '../src/model/tasks.dart';
 import '../src/database/db.dart';
 
@@ -36,8 +37,9 @@ class _AllNotesState extends State<AllNotes> {
     widget.restartKanbans();
   }
 
-  void _loadNotesFromKanban() async{
-    final copyNotesFromKanban = await DB.instance.readTasksFromKanban(widget.kanbanID!);
+  void _loadNotesFromKanban() async {
+    final copyNotesFromKanban =
+        await DB.instance.readTasksFromKanban(widget.kanbanID!);
     setState(() {
       allNotes = copyNotesFromKanban;
     });
@@ -49,8 +51,7 @@ class _AllNotesState extends State<AllNotes> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
           duration: Duration(seconds: 1),
-          content: Text('all notes have been deleted!')
-      ),
+          content: Text('all notes have been deleted!')),
     );
   }
 
@@ -58,51 +59,61 @@ class _AllNotesState extends State<AllNotes> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text(widget.title), actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_outline),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Alert'),
-                      content: const Text(
-                          'Are you sure you want to delete all notes?'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            _deleteAllNotes();
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Delete'),
-                        ),
-                      ],
-                    );
-                  });
-            },
+          appBar: AppBar(
+            title: Text(widget.title),
+            actions: [
+              allNotes.isNotEmpty ? IconButton(
+                icon: const Icon(Icons.delete_outline),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Alert'),
+                          content: const Text(
+                              'Are you sure you want to delete all notes?'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                _deleteAllNotes();
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        );
+                      });
+                },
+              ) : const SizedBox.shrink()
+            ],
           ),
-        ]),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-          child: Center(
-            child: ListView(
-            children: allNotes
-                .map((note) => ContentNote(
-                      restart: _loadAllNotes,
-                      note: note,
-                    ))
-                .toList(),
-                        ),
-          ),
-        ),
-      ),
+          body: allNotes.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 30.0),
+                  child: Center(
+                    child: ListView(
+                      children: allNotes
+                          .map((note) => ContentNote(
+                                restart: _loadAllNotes,
+                                note: note,
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                )
+              : const Center(
+                  child: Text(
+                    'no kanbans',
+                    style: kSmallText1,
+                  ),
+                )),
     );
   }
 }

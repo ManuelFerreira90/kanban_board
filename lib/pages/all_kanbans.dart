@@ -3,6 +3,8 @@ import 'package:kanban_board/components/title_card_kanban.dart';
 import 'package:kanban_board/src/database/db.dart';
 import 'package:kanban_board/src/model/kanban.dart';
 
+import '../const.dart';
+
 class AllKanbans extends StatefulWidget {
   const AllKanbans({
     super.key,
@@ -52,7 +54,7 @@ class _AllKanbansState extends State<AllKanbans> {
       appBar: AppBar(
         title: const Text('All kanban Boards'),
         actions: [
-          IconButton(
+          _allKanbans.isNotEmpty ? IconButton(
             icon: const Icon(Icons.delete_outline),
             onPressed: () {
               showDialog(
@@ -80,10 +82,10 @@ class _AllKanbansState extends State<AllKanbans> {
                     );
                   });
             },
-          ),
+          ) : const SizedBox.shrink()
         ],
       ),
-      body: Padding(
+      body: _allKanbans.isNotEmpty ? Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
         child: Center(
           child: ListView(
@@ -98,7 +100,9 @@ class _AllKanbansState extends State<AllKanbans> {
             ],
           ),
         ),
-      ),
+      ) : const Center(
+        child: Text('no kanbans', style: kSmallText1,),
+      )
     );
   }
 }

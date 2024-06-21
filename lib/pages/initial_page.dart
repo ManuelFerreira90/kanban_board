@@ -175,13 +175,6 @@ class _InitialPageState extends State<InitialPage> {
                     ),
                   ],
                 ),
-              // : Wrap(children: [
-              //     ..._kanbanList.map((kanban) => CardKanban(
-              //           kanban: kanban,
-              //           restartKanbans: _loadData,
-              //           editKanbanTitle: _editKanbanTitle,
-              //         )),
-              //   ]),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
