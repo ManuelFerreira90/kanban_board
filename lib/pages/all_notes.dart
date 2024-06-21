@@ -110,7 +110,7 @@ class _AllNotesState extends State<AllNotes> {
                 )
               : const Center(
                   child: Text(
-                    'no kanbans',
+                    'No notes',
                     style: kSmallText1,
                   ),
                 )),

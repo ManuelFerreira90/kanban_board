@@ -101,7 +101,7 @@ class _AllKanbansState extends State<AllKanbans> {
           ),
         ),
       ) : const Center(
-        child: Text('no kanbans', style: kSmallText1,),
+        child: Text('No kanbans', style: kSmallText1,),
       )
     );
   }
