@@ -18,7 +18,7 @@ class AllKanbans extends StatefulWidget {
 }
 
 class _AllKanbansState extends State<AllKanbans> {
-  late List<Kanban> _allKanbans;
+  List<Kanban> _allKanbans = [];
 
   @override
   void initState(){

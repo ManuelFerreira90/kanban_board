@@ -20,7 +20,7 @@ class AllNotes extends StatefulWidget {
 }
 
 class _AllNotesState extends State<AllNotes> {
-  late List<Tasks> allNotes;
+  List<Tasks> allNotes = [];
 
   @override
   void initState() {

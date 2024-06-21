@@ -40,7 +40,8 @@ class _InitialPageState extends State<InitialPage> {
     });
   }
 
-  void _editKanbanTitle(BuildContext context, Kanban kanban, VoidCallback restartKanbans) {
+  void _editKanbanTitle(
+      BuildContext context, Kanban kanban, VoidCallback restartKanbans) {
     String newTitle = kanban.title;
 
     showDialog(
@@ -53,7 +54,6 @@ class _InitialPageState extends State<InitialPage> {
               newTitle = value;
             },
             decoration: const InputDecoration(hintText: 'New Title'),
-
           ),
           actions: <Widget>[
             TextButton(
@@ -69,9 +69,7 @@ class _InitialPageState extends State<InitialPage> {
                   await DB.instance.updateKanban(kanban);
                   restartKanbans();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Kanban title updated!')
-                    ),
+                    const SnackBar(content: Text('Kanban title updated!')),
                   );
                   Navigator.pop(context);
                 }
@@ -107,16 +105,14 @@ class _InitialPageState extends State<InitialPage> {
                 leading: const Icon(Icons.sticky_note_2_outlined),
                 title: const Text('All notes'),
                 onTap: () {
-                    Navigator.push(
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => AllNotes(
-                            restartKanbans: _loadData,
-                            title: 'All Notes',
-                            kanbanID: null,
-                          )
-                      )
-                    );
+                                restartKanbans: _loadData,
+                                title: 'All Notes',
+                                kanbanID: null,
+                              )));
                 },
               ),
               ListTile(
@@ -128,16 +124,16 @@ class _InitialPageState extends State<InitialPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => AllKanbans(
-                              restartKanbans: _loadData,
-                              editKanbanTitle: _editKanbanTitle,
-                            )
-                        )
-                    );
+                                  restartKanbans: _loadData,
+                                  editKanbanTitle: _editKanbanTitle,
+                                )));
                   });
                 },
               ),
               ListTile(
-                leading: widget.isDark ? const Icon(Icons.light_mode_outlined) : const Icon(Icons.dark_mode_outlined),
+                leading: widget.isDark
+                    ? const Icon(Icons.light_mode_outlined)
+                    : const Icon(Icons.dark_mode_outlined),
                 title: const Text('Theme Mode'),
                 onTap: widget.setIsDark,
               ),
@@ -149,36 +145,43 @@ class _InitialPageState extends State<InitialPage> {
         ),
         body: Padding(
           padding: const EdgeInsets.only(top: 15.0, right: 20.0),
-          child: _kanbanList.isEmpty ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(),
-              ),
-              const Expanded(
-                child: Text(
-                  'Create a Kanban Board',
-                  style: kSmallText1,
-                ),
-              ),
-            ],
-          ) : ListView(
-            children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: _kanbanList.isEmpty
+              ? const Center(
+                  child: Text(
+                    'Create a Kanban Board',
+                    style: kSmallText1,
+                  ),
+                )
+              : Column(
                   children: [
-                    ..._kanbanList.map((kanban) => CardKanban(
-                      kanban: kanban,
-                      restartKanbans: _loadData,
-                      editKanbanTitle: _editKanbanTitle,
-                    )),
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ..._kanbanList.map((kanban) => CardKanban(
+                                      kanban: kanban,
+                                      restartKanbans: _loadData,
+                                      editKanbanTitle: _editKanbanTitle,
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
+              // : Wrap(children: [
+              //     ..._kanbanList.map((kanban) => CardKanban(
+              //           kanban: kanban,
+              //           restartKanbans: _loadData,
+              //           editKanbanTitle: _editKanbanTitle,
+              //         )),
+              //   ]),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -213,8 +216,7 @@ class _InitialPageState extends State<InitialPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 duration: Duration(seconds: 1),
-                                content: Text('kanban Board was created!')
-                            ),
+                                content: Text('kanban Board was created!')),
                           );
                         }
                       },
